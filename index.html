@@ -29,11 +29,46 @@
 
     <script>
       $(document).ready(function() {
+
+        // SET UP + FUNCTIONS
+
+        let points = {
+          player: 0,
+          total: 0
+        };
+
+        function shuffle(word) {
+          const chars = word.split('');
+          for (let i = chars.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * i);
+            let temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
+          }
+          return chars.join('');
+        };
+
+        function calculateTotalPoints(answers) {
+          let totalPoints = 0;
+          for (let i = 0; i < answers.length; i++) {
+            totalPoints += answers[i].length;
+          }
+          return totalPoints;
+        };
+
+
+
         let currentLevel = 0;
+        points.total = calculateTotalPoints(wordsAndAnswers[currentLevel].answers)
+
         let $masterword = $('<div class="masterword"></div>');
         let $statusbar = $(".statusbar");
-        $masterword.text(`Your current master word is: ${wordsAndAnswers[currentLevel].word}`);
+        $masterword.text(`Your current master word is: ${shuffle(wordsAndAnswers[currentLevel].word)}`);
+        let $pointsDisplay = $('<div class="points"></div>');
+        $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
+
         $masterword.appendTo($statusbar);
+        $pointsDisplay.appendTo($statusbar);
 
       });
     </script>

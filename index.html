@@ -96,8 +96,9 @@
             wordLength +=1;
           }
           if (gameplay.correctGuesses.length === answers.length) {
-            gameplay.currentLevel += 1;
-            runLevel();
+            $(".action").hide();
+            $(".level").html("<span class='levelcomplete'>Level complete! </span>");
+            $("<button class='nextlevel'>Next level</button>").appendTo(".level");
           }
         };
 
@@ -106,6 +107,8 @@
           points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
           masterWord = wordsAndAnswers[gameplay.currentLevel].word;
           answers = wordsAndAnswers[gameplay.currentLevel].answers;
+          $(".action").show();
+          $(".level").html('');
           $masterword.text(`${scramble(masterWord)}`);
           $masterword.appendTo(".level");
           $hiddenWords.html('');
@@ -196,6 +199,11 @@
           points.player -= randomWord.length;
           $hiddenWords.html('');
           displayProgress(masterWord, answers);
+        });
+
+        $(".level").on("click", ".nextlevel", function() {
+          gameplay.currentLevel += 1;
+          runLevel();
         });
 
 

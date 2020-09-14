@@ -26,6 +26,10 @@ header {
   margin: 0 50px 0 0;
 }
 
+.levelcomplete {
+  margin: 0 50px 0 0;
+}
+
 h1 {
   font-size: 90px;
   font-family: 'Rye', cursive;
@@ -37,7 +41,7 @@ h1 {
 
 h2 {
   font-size: 30px;
-  margin: 10px 0 50px 0;
+  margin: 10px 0 10px 0;
 }
 
 p {

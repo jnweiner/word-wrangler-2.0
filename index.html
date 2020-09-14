@@ -51,7 +51,7 @@
 
         function displayWords(wordLength, answers) {
           let guessesToDisplay = [];
-          correctGuesses.forEach(function(guess) {
+          gameplay.correctGuesses.forEach(function(guess) {
             if (guess.length === wordLength) {
               guessesToDisplay.push(guess);
             }
@@ -72,7 +72,7 @@
             $guessedWord.text(`${guessesToDisplay[n]}`)
             if (n < guessesToDisplay.length) {
               $guessedWord.appendTo($word);
-              if (guessesToDisplay[n] === correctGuesses[correctGuesses.length - 1]) {
+              if (guessesToDisplay[n] === gameplay.correctGuesses[gameplay.correctGuesses.length - 1]) {
                 $guessedWord.css("color", "rgba(67, 135, 54, 1)");
               }
             }
@@ -86,7 +86,7 @@
           $pointsDisplay.appendTo(".show-points");
           let wordLength = 3;
           while (wordLength <= masterWord.length) {
-            let $hiddenflag = $("<div class='hiddenflag'></div>");
+            let $hiddenflag = $("<p class='hiddenflag'></p>");
             $hiddenflag.text(`HIDDEN ${wordLength}-LETTER WORDS`);
             $hiddenflag.appendTo($hiddenWords);
             displayWords(wordLength, answers);
@@ -95,13 +95,16 @@
             }
             wordLength +=1;
           }
+          if (gameplay.correctGuesses.length === answers.length) {
+            alert("Level complete!");
+          }
         };
 
         function generateRandomWord() {
           while (true) {
             let index = Math.floor(Math.random() * (answers.length));
-            if (!correctGuesses.includes(answers[index])) {
-              correctGuesses.push(answers[index]);
+            if (!gameplay.correctGuesses.includes(answers[index])) {
+              gameplay.correctGuesses.push(answers[index]);
               return answers[index];
               break;
             }
@@ -115,25 +118,36 @@
           total: 0
         };
 
-        let currentLevel = 0;
-        points.total = calculateTotalPoints(wordsAndAnswers[currentLevel].answers)
-        let correctGuesses = [];
-        let masterWord = wordsAndAnswers[currentLevel].word;
-        let answers = wordsAndAnswers[currentLevel].answers;
+        let gameplay = {
+          currentLevel: 0,
+          correctGuesses: [],
+        }
+
+        points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
+        let masterWord = wordsAndAnswers[gameplay.currentLevel].word;
+        let answers = wordsAndAnswers[gameplay.currentLevel].answers;
 
         let $hiddenWords = $(".hiddenwords");
 
         let $masterword = $('<p class="masterword"></p>');
         $masterword.text(`${scramble(masterWord)}`);
-
-        let $pointsDisplay = $('<p class="points"></p>');
-
         $masterword.appendTo(".level");
 
-        displayProgress(masterWord, answers);
 
+        let $pointsDisplay = $('<p class="points"></p>');
         let $message = $("<p class='message'></p>");
 
+        // if (correctGuesses.length === answers.length) {
+        //     alert('Level complete!')
+        //   }
+        // alert new level
+        // clear out level and hiddenwords
+        // clear out correctGuesses
+        // update value of masterWord and answers
+        // displayProgress again
+
+
+        displayProgress(masterWord, answers);
 
         // EVENT LISTENERS
 
@@ -141,10 +155,10 @@
           $message.text('');
           let playerGuess = $(".guess").val();
           playerGuess = playerGuess.toLowerCase();
-          if (correctGuesses.includes(playerGuess)) {
+          if (gameplay.correctGuesses.includes(playerGuess)) {
             $message.text("Already got that one, try again!");
           } else if (answers.includes(playerGuess)) {
-            correctGuesses.push(playerGuess);
+            gameplay.correctGuesses.push(playerGuess);
             $hiddenWords.html('');
             points.player += playerGuess.length;
             displayProgress(masterWord, answers);
@@ -166,6 +180,7 @@
           $hiddenWords.html('');
           displayProgress(masterWord, answers);
         });
+
 
 
 

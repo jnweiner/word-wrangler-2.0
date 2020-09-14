@@ -96,9 +96,21 @@
             wordLength +=1;
           }
           if (gameplay.correctGuesses.length === answers.length) {
-            alert("Level complete!");
+            gameplay.currentLevel += 1;
+            runLevel();
           }
         };
+
+        function runLevel() {
+          gameplay.correctGuesses = [];
+          points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
+          masterWord = wordsAndAnswers[gameplay.currentLevel].word;
+          answers = wordsAndAnswers[gameplay.currentLevel].answers;
+          $masterword.text(`${scramble(masterWord)}`);
+          $masterword.appendTo(".level");
+          $hiddenWords.html('');
+          displayProgress(masterWord, answers);
+        }
 
         function generateRandomWord() {
           while (true) {
@@ -123,19 +135,24 @@
           correctGuesses: [],
         }
 
-        points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
-        let masterWord = wordsAndAnswers[gameplay.currentLevel].word;
-        let answers = wordsAndAnswers[gameplay.currentLevel].answers;
+        let masterWord = '';
+        let answers = '';
+
+        // points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
+        // masterWord = wordsAndAnswers[gameplay.currentLevel].word;
+        // answers = wordsAndAnswers[gameplay.currentLevel].answers;
 
         let $hiddenWords = $(".hiddenwords");
 
         let $masterword = $('<p class="masterword"></p>');
-        $masterword.text(`${scramble(masterWord)}`);
-        $masterword.appendTo(".level");
+        // $masterword.text(`${scramble(masterWord)}`);
+        // $masterword.appendTo(".level");
 
 
         let $pointsDisplay = $('<p class="points"></p>');
         let $message = $("<p class='message'></p>");
+
+        runLevel();
 
         // if (correctGuesses.length === answers.length) {
         //     alert('Level complete!')
@@ -147,7 +164,7 @@
         // displayProgress again
 
 
-        displayProgress(masterWord, answers);
+        // displayProgress(masterWord, answers);
 
         // EVENT LISTENERS
 

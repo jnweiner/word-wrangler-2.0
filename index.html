@@ -12,18 +12,15 @@
       <h1>WORD WRANGLER</h1>
       <h2>Time to wrangle some words!</h2>
     </header>
-    <div class="options">
-      <button class="scramble">Scramble master word again</button>
-      <button class="reveal">Reveal hidden word</button>
-      <button class="quit">Quit</button>
-    </div>
-    <div class="statusbar">
+    <div class="word-space">
     </div>
     <div class="displaywords">
     </div>
     <div class="guess-space">
       <span class="guessaword">Guess a word: </span><input type="text" class="guess"/>
-      <button class="submit">Submit!</button>
+      <button class="submit">Submit guess!</button>
+      <button class="scramble">Scramble master word again</button>
+      <button class="reveal">Reveal hidden word</button>
     </div>
 
     <script>
@@ -75,6 +72,9 @@
             let $word = $("<div class='word'></div>");
             if (n < guessesToDisplay.length) {
               $word.text(`${n + 1}) ${guessesToDisplay[n]}`);
+              if (guessesToDisplay[n] === correctGuesses[correctGuesses.length - 1]) {
+                $word.css("color", "maroon");
+              }
             } else {
               $word.text(`${n + 1})`);
             }
@@ -84,7 +84,8 @@
         };
 
         function displayProgress(masterWord, answers) {
-          $pointsDisplay.appendTo($statusbar);
+          $pointsDisplay.appendTo(".displaywords");
+          $("<br>").appendTo(".displaywords");
           let wordLength = 3;
           while (wordLength <= masterWord.length) {
             let $hiddenflag = $("<div class='hiddenflag'></div>");
@@ -105,13 +106,12 @@
         let answers = wordsAndAnswers[currentLevel].answers;
 
         let $masterword = $('<div class="masterword"></div>');
-        let $statusbar = $(".statusbar");
-        $masterword.text(`LEVEL ${currentLevel + 1} -- ${shuffle(masterWord)}`);
+        $masterword.text(`${shuffle(masterWord)}`);
 
         let $pointsDisplay = $('<div class="points"></div>');
         $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
 
-        $masterword.appendTo($statusbar);
+        $masterword.appendTo(".word-space");
 
         displayProgress(masterWord, answers);
 
@@ -120,7 +120,8 @@
         $(".submit").on("click", function() {
           $message.text('');
           let playerGuess = $(".guess").val();
-          if (correctGuesses.includes(playerGuess.toLowerCase())) {
+          playerGuess = playerGuess.toLowerCase();
+          if (correctGuesses.includes(playerGuess)) {
             $message.text("Already got that one, try again!");
           } else if (answers.includes(playerGuess)) {
             correctGuesses.push(playerGuess);
@@ -134,6 +135,10 @@
           }
           $message.appendTo(".guess-space");
           $(".guess").val('');
+        });
+
+        $(".scramble").on("click", function() {
+          $masterword.text(`${shuffle(masterWord)}`);
         });
 
 

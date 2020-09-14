@@ -21,10 +21,9 @@
     </div>
     <div class="displaywords">
     </div>
-    <div class="guess">
-      <textarea class="player-guess">Guess a word</textarea>
-      <br>
-      <button class="submit-guess">Submit!</button>
+    <div class="guess-space">
+      <span class="guessaword">Guess a word: </span><input type="text" class="guess"/>
+      <button class="submit">Submit!</button>
     </div>
 
     <script>
@@ -99,17 +98,39 @@
         let currentLevel = 0;
         points.total = calculateTotalPoints(wordsAndAnswers[currentLevel].answers)
         let correctGuesses = [];
+        let masterWord = wordsAndAnswers[currentLevel].word;
+        let answers = wordsAndAnswers[currentLevel].answers;
 
         let $masterword = $('<div class="masterword"></div>');
         let $statusbar = $(".statusbar");
-        $masterword.text(`LEVEL ${currentLevel + 1} -- ${shuffle(wordsAndAnswers[currentLevel].word)}`);
+        $masterword.text(`LEVEL ${currentLevel + 1} -- ${shuffle(masterWord)}`);
         let $pointsDisplay = $('<div class="points"></div>');
         $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
 
         $masterword.appendTo($statusbar);
         $pointsDisplay.appendTo($statusbar);
 
-        displayProgress(wordsAndAnswers[currentLevel].word, wordsAndAnswers[currentLevel].answers);
+        displayProgress(masterWord, answers);
+
+        $(".submit").on("click", function() {
+          let $message = $("<div class='message'></div>")
+          let playerGuess = $(".guess").val();
+          if (correctGuesses.includes(playerGuess)) {
+            $message.text("Already got that one, try again!");
+          } else if (answers.includes(playerGuess)) {
+            correctGuesses.push(playerGuess);
+            $(".displaywords").html('');
+            displayProgress(masterWord, answers);
+            $message.text("Correct!");
+          } else {
+            $message.text("Try again!");
+          }
+          $message.appendTo(".guess-space");
+          $(".guess").val('');
+        });
+
+
+
 
       });
     </script>

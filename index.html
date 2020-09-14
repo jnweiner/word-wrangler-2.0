@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jquery-3.5.1.js"></script>
+    <script src="words.js"></script>
+    <title>Word Wrangler</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <h1>WORD WRANGLER</h1>
+      <h2>Time to wrangle some words!</h2>
+    </header>
+    <div class="options">
+      <button class="scramble">Scramble master word again</button>
+      <button class="reveal">Reveal hidden word</button>
+      <button class="quit">Quit</button>
+    </div>
+    <div class="statusbar">
+    </div>
+    <div class="displaywords">
+    </div>
+    <div class="guess">
+      <textarea class="player-guess">Guess a word</textarea>
+      <br>
+      <button class="submit-guess">Submit!</button>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        let currentLevel = 0;
+        let $masterword = $('<div class="masterword"></div>');
+        let $statusbar = $(".statusbar");
+        $masterword.text(`Your current master word is: ${wordsAndAnswers[currentLevel].word}`);
+        $masterword.appendTo($statusbar);
+
+      });
+    </script>
+  </body>
+</html>

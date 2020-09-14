@@ -13,7 +13,7 @@ header {
   text-align: center;
 }
 
-.options, .statusbar, .displaywords, .guess {
+.options, .statusbar, .displaywords, .guess-space {
   max-width: 800px;
   margin: 30px auto;
   border-radius: 20px;

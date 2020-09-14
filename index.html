@@ -66,14 +66,15 @@
 
           let n = 0;
           while (n < answerAmount) {
-            let $word = $("<div class='word'></div>");
+            let $word = $("<p class='word'></p>");
+            $word.text(`${n + 1})  `);
+            let $guessedWord = $("<span class='guessedword'></span>");
+            $guessedWord.text(`${guessesToDisplay[n]}`)
             if (n < guessesToDisplay.length) {
-              $word.text(`${n + 1}) ${guessesToDisplay[n]}`);
+              $guessedWord.appendTo($word);
               if (guessesToDisplay[n] === correctGuesses[correctGuesses.length - 1]) {
-                $word.css("color", "rgba(67, 135, 54, 1)");
+                $guessedWord.css("color", "rgba(67, 135, 54, 1)");
               }
-            } else {
-              $word.text(`${n + 1})`);
             }
             $word.appendTo($hiddenWords);
             n += 1;
@@ -122,17 +123,16 @@
 
         let $hiddenWords = $(".hiddenwords");
 
-        let $masterword = $('<div class="masterword"></div>');
+        let $masterword = $('<p class="masterword"></p>');
         $masterword.text(`${scramble(masterWord)}`);
 
-        let $pointsDisplay = $('<div class="points"></div>');
-        $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
+        let $pointsDisplay = $('<p class="points"></p>');
 
         $masterword.appendTo(".level");
 
         displayProgress(masterWord, answers);
 
-        let $message = $("<div class='message'></div>");
+        let $message = $("<p class='message'></p>");
 
 
         // EVENT LISTENERS

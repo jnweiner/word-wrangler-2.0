@@ -33,7 +33,7 @@
           total: 0
         };
 
-        function shuffle(word) {
+        function scramble(word) {
           const chars = word.split('');
           for (let i = chars.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * i);
@@ -106,7 +106,7 @@
         let answers = wordsAndAnswers[currentLevel].answers;
 
         let $masterword = $('<div class="masterword"></div>');
-        $masterword.text(`${shuffle(masterWord)}`);
+        $masterword.text(`${scramble(masterWord)}`);
 
         let $pointsDisplay = $('<div class="points"></div>');
         $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
@@ -138,7 +138,26 @@
         });
 
         $(".scramble").on("click", function() {
-          $masterword.text(`${shuffle(masterWord)}`);
+          $masterword.text(`${scramble(masterWord)}`);
+        });
+
+        function generateRandomWord() {
+          while (true) {
+            let index = Math.floor(Math.random() * (answers.length));
+            if (!correctGuesses.includes(answers[index])) {
+              correctGuesses.push(answers[index]);
+              return answers[index];
+              break;
+            }
+          }
+        };
+
+        $(".reveal").on("click", function() {
+          let randomWord = generateRandomWord();
+          points.player -= randomWord.length;
+          $(".displaywords").html('');
+          $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`)
+          displayProgress(masterWord, answers);
         });
 
 

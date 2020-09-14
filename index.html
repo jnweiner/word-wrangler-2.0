@@ -84,13 +84,16 @@
         };
 
         function displayProgress(masterWord, answers) {
+          $pointsDisplay.appendTo($statusbar);
           let wordLength = 3;
           while (wordLength <= masterWord.length) {
             let $hiddenflag = $("<div class='hiddenflag'></div>");
             $hiddenflag.text(`HIDDEN ${wordLength}-LETTER WORDS`);
-            $("<br>").appendTo(".displaywords");
             $hiddenflag.appendTo(".displaywords");
             displayWords(wordLength, answers);
+            if (wordLength !== masterWord.length) {
+              $("<br>").appendTo(".displaywords");
+            }
             wordLength +=1;
           }
         };
@@ -104,22 +107,26 @@
         let $masterword = $('<div class="masterword"></div>');
         let $statusbar = $(".statusbar");
         $masterword.text(`LEVEL ${currentLevel + 1} -- ${shuffle(masterWord)}`);
+
         let $pointsDisplay = $('<div class="points"></div>');
         $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
 
         $masterword.appendTo($statusbar);
-        $pointsDisplay.appendTo($statusbar);
 
         displayProgress(masterWord, answers);
 
+        let $message = $("<div class='message'></div>");
+
         $(".submit").on("click", function() {
-          let $message = $("<div class='message'></div>")
+          $message.text('');
           let playerGuess = $(".guess").val();
-          if (correctGuesses.includes(playerGuess)) {
+          if (correctGuesses.includes(playerGuess.toLowerCase())) {
             $message.text("Already got that one, try again!");
           } else if (answers.includes(playerGuess)) {
             correctGuesses.push(playerGuess);
             $(".displaywords").html('');
+            points.player += playerGuess.length;
+            $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`)
             displayProgress(masterWord, answers);
             $message.text("Correct!");
           } else {

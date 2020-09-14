@@ -83,7 +83,7 @@
 
         function displayProgress(masterWord, answers) {
           $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`)
-          $pointsDisplay.appendTo(".show-points");
+          $hiddenWords.html('');
           let wordLength = 3;
           while (wordLength <= masterWord.length) {
             let $hiddenflag = $("<p class='hiddenflag'></p>");
@@ -97,21 +97,20 @@
           }
           if (gameplay.correctGuesses.length === answers.length) {
             $(".action").hide();
+            $message.text('');
             $(".level").html("<span class='levelcomplete'>Level complete! </span>");
             $("<button class='nextlevel'>Next level</button>").appendTo(".level");
           }
         };
 
-        function runLevel() {
+        function setUpLevel() {
           gameplay.correctGuesses = [];
           points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
           masterWord = wordsAndAnswers[gameplay.currentLevel].word;
           answers = wordsAndAnswers[gameplay.currentLevel].answers;
           $(".action").show();
-          $(".level").html('');
           $masterword.text(`${scramble(masterWord)}`);
-          $masterword.appendTo(".level");
-          $hiddenWords.html('');
+          $(".level").html($masterword);
           displayProgress(masterWord, answers);
         }
 
@@ -141,33 +140,15 @@
         let masterWord = '';
         let answers = '';
 
-        // points.total += calculateTotalPoints(wordsAndAnswers[gameplay.currentLevel].answers)
-        // masterWord = wordsAndAnswers[gameplay.currentLevel].word;
-        // answers = wordsAndAnswers[gameplay.currentLevel].answers;
-
         let $hiddenWords = $(".hiddenwords");
 
         let $masterword = $('<p class="masterword"></p>');
-        // $masterword.text(`${scramble(masterWord)}`);
-        // $masterword.appendTo(".level");
-
 
         let $pointsDisplay = $('<p class="points"></p>');
+        $pointsDisplay.appendTo(".show-points");
         let $message = $("<p class='message'></p>");
 
-        runLevel();
-
-        // if (correctGuesses.length === answers.length) {
-        //     alert('Level complete!')
-        //   }
-        // alert new level
-        // clear out level and hiddenwords
-        // clear out correctGuesses
-        // update value of masterWord and answers
-        // displayProgress again
-
-
-        // displayProgress(masterWord, answers);
+        setUpLevel();
 
         // EVENT LISTENERS
 
@@ -179,7 +160,6 @@
             $message.text("Already got that one, try again!");
           } else if (answers.includes(playerGuess)) {
             gameplay.correctGuesses.push(playerGuess);
-            $hiddenWords.html('');
             points.player += playerGuess.length;
             displayProgress(masterWord, answers);
             $message.text("Correct!");
@@ -191,10 +171,12 @@
         });
 
         $(".scramble").on("click", function() {
+          $message.text('');
           $masterword.text(`${scramble(masterWord)}`);
         });
 
         $(".reveal").on("click", function() {
+          $message.text('');
           let randomWord = generateRandomWord();
           points.player -= randomWord.length;
           $hiddenWords.html('');
@@ -203,7 +185,7 @@
 
         $(".level").on("click", ".nextlevel", function() {
           gameplay.currentLevel += 1;
-          runLevel();
+          setUpLevel();
         });
 
 

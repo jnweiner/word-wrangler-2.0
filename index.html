@@ -50,25 +50,66 @@
 
         function calculateTotalPoints(answers) {
           let totalPoints = 0;
-          for (let i = 0; i < answers.length; i++) {
-            totalPoints += answers[i].length;
-          }
+          answers.forEach(function(answer) {
+            totalPoints += answer.length;
+          });
           return totalPoints;
         };
 
+        function displayWords(wordLength, answers) {
+          let guessesToDisplay = [];
+          correctGuesses.forEach(function(guess) {
+            if (guess.length === wordLength) {
+              guessesToDisplay.push(guess);
+            }
+          });
 
+          let answerAmount = 0;
+          answers.forEach(function(answer) {
+            if (answer.length === wordLength) {
+              answerAmount += 1;
+            }
+          });
+
+          let n = 0;
+          while (n < answerAmount) {
+            let $word = $("<div class='word'></div>");
+            if (n < guessesToDisplay.length) {
+              $word.text(`${n + 1}) ${guessesToDisplay[n]}`);
+            } else {
+              $word.text(`${n + 1})`);
+            }
+            $word.appendTo(".displaywords");
+            n += 1;
+          }
+        };
+
+        function displayProgress(masterWord, answers) {
+          let wordLength = 3;
+          while (wordLength <= masterWord.length) {
+            let $hiddenflag = $("<div class='hiddenflag'></div>");
+            $hiddenflag.text(`HIDDEN ${wordLength}-LETTER WORDS`);
+            $("<br>").appendTo(".displaywords");
+            $hiddenflag.appendTo(".displaywords");
+            displayWords(wordLength, answers);
+            wordLength +=1;
+          }
+        };
 
         let currentLevel = 0;
         points.total = calculateTotalPoints(wordsAndAnswers[currentLevel].answers)
+        let correctGuesses = [];
 
         let $masterword = $('<div class="masterword"></div>');
         let $statusbar = $(".statusbar");
-        $masterword.text(`Your current master word is: ${shuffle(wordsAndAnswers[currentLevel].word)}`);
+        $masterword.text(`LEVEL ${currentLevel + 1} -- ${shuffle(wordsAndAnswers[currentLevel].word)}`);
         let $pointsDisplay = $('<div class="points"></div>');
         $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`);
 
         $masterword.appendTo($statusbar);
         $pointsDisplay.appendTo($statusbar);
+
+        displayProgress(wordsAndAnswers[currentLevel].word, wordsAndAnswers[currentLevel].answers);
 
       });
     </script>

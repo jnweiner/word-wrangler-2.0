@@ -9,16 +9,21 @@ header {
   margin: 0 auto;
 }
 
-.options {
+.masterword {
+  font-size: 60px;
   text-align: center;
 }
 
-.options, .statusbar, .displaywords, .guess-space {
+.word-space, .displaywords, .guess-space {
   max-width: 800px;
   margin: 30px auto;
   border-radius: 20px;
   border: 5px solid black;
   padding: 20px;
+}
+
+.submit {
+  margin: 0 50px 0 0;
 }
 
 h1 {

@@ -75,7 +75,8 @@
             if (n < guessesToDisplay.length) {
               $guessedWord.appendTo($word);
               if (guessesToDisplay[n] === gameplay.correctGuesses[gameplay.correctGuesses.length - 1]) {
-                $guessedWord.css("color", "rgba(67, 135, 54, 1)");
+                $guessedWord.css("color", "goldenrod");
+                $guessedWord.css("font-weight", "bold");
               }
             }
             $word.appendTo($hiddenWords);
@@ -84,12 +85,13 @@
         };
 
         function displayProgress(masterWord, answers) {
-          $pointsDisplay.text(`Your points: ${points.player} out of ${points.total} possible points`)
+          $yourPoints.text(`${points.player}`);
+          $totalPoints.text(`/ ${points.total}`);
           $hiddenWords.html('');
           let wordLength = 3;
           while (wordLength <= masterWord.length) {
             let $hiddenflag = $("<p class='hiddenflag'></p>");
-            $hiddenflag.text(`HIDDEN ${wordLength}-LETTER WORDS`);
+            $hiddenflag.text(`HIDDEN ${wordLength}-LETTER WORDS:`);
             $hiddenflag.appendTo($hiddenWords);
             displayWords(wordLength, answers);
             if (wordLength !== masterWord.length) {
@@ -146,8 +148,11 @@
 
         let $masterword = $('<p class="masterword"></p>');
 
-        let $pointsDisplay = $('<p class="points"></p>');
-        $pointsDisplay.appendTo(".show-points");
+        $('<p>Points:</p>').appendTo(".show-points");
+        let $yourPoints = $('<p class="your-points"></p>');
+        $yourPoints.appendTo(".show-points");
+        let $totalPoints = $('<p class="total-points"></p>');
+        $totalPoints.appendTo(".show-points");
         let $message = $("<p class='message'></p>");
 
         setUpLevel();

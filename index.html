@@ -103,7 +103,7 @@
           if (gameplay.correctGuesses.length === answers.length) {
             $(".action").hide();
             $message.text('');
-            $(".level").html("<span class='levelcomplete'>Level complete! </span>");
+            $(".level").html("<p class='levelcomplete'>Level complete! </p><br>");
             $("<button class='nextlevel'>Next level</button>").appendTo(".level");
           }
         };

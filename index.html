@@ -6,6 +6,7 @@
     <title>Word Wrangler</title>
     <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chilanka&display=swap" rel="stylesheet">
   </head>
   <body>
     <header>
@@ -21,9 +22,9 @@
       </div>
     </div>
     <div class="action">
-      <span>Guess a word: </span><input type="text" class="guess"/>
-      <button class="submit">Submit guess!</button>
-      <button class="scramble">Scramble master word again</button>
+      <span class="title"><strong>Guess a word: </strong></span><input type="text" class="guess"/>
+      <button class="submit">Guess!</button>
+      <button class="scramble">Scramble word again</button>
       <button class="reveal">Reveal hidden word</button>
     </div>
 
@@ -75,7 +76,7 @@
             if (n < guessesToDisplay.length) {
               $guessedWord.appendTo($word);
               if (guessesToDisplay[n] === gameplay.correctGuesses[gameplay.correctGuesses.length - 1]) {
-                $guessedWord.css("color", "goldenrod");
+                $guessedWord.css("color", "rgba(208, 68, 39, 1)");
                 $guessedWord.css("font-weight", "bold");
               }
             }
@@ -90,8 +91,8 @@
           $hiddenWords.html('');
           let wordLength = 3;
           while (wordLength <= masterWord.length) {
-            let $hiddenflag = $("<p class='hiddenflag'></p>");
-            $hiddenflag.text(`HIDDEN ${wordLength}-LETTER WORDS:`);
+            let $hiddenflag = $("<p class='title'></p>");
+            $hiddenflag.text(`Hidden ${wordLength}-letter words:`);
             $hiddenflag.appendTo($hiddenWords);
             displayWords(wordLength, answers);
             if (wordLength !== masterWord.length) {
@@ -148,7 +149,7 @@
 
         let $masterword = $('<p class="masterword"></p>');
 
-        $('<p>Points:</p>').appendTo(".show-points");
+        $('<span class="title">Points:</span>').appendTo(".show-points");
         let $yourPoints = $('<p class="your-points"></p>');
         $yourPoints.appendTo(".show-points");
         let $totalPoints = $('<p class="total-points"></p>');
